@@ -13,12 +13,13 @@
     "lint:prettier:fix": "prettier --write .",
     "lint:prettier:check": "prettier --check .",
     "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test:watch": "jest --watchAll --runInBand"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "dotenv": "16.4.4",
+    "dotenv-expand": "11.0.6",
     "next": "13.1.6",
     "node-pg-migrate": "6.2.2",
     "pg": "8.11.3",
