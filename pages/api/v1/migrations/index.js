@@ -4,7 +4,7 @@ import { join } from "node:path";
 
 export default async function migrations(request, response) {
   if (request.method !== "GET" || request.method !== "POST") {
-    response.status(405).json({
+    return response.status(405).json({
       error: "Method Not Allowed",
     });
   }
