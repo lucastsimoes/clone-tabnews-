@@ -1,3 +1,4 @@
+/* eslint-disable jest/valid-title */
 import orchestrator from "tests/orchestrator";
 
 beforeAll(async () => {
