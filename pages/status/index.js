@@ -31,21 +31,24 @@ function DatabaseStatus() {
   const { isLoading, data } = useSWR("/api/v1/status", fetchAPI, {
     refreshInterval: 2000,
   });
-  let versionUpdatedAtText = "Carregando...";
-  let OpenedConnectionsText = "Carregando...";
-  let MaxConnectionsText = "Carregando...";
-
+  let databaseStatusInfo = "Carregando...";
   if (!isLoading && data) {
-    versionUpdatedAtText = data.dependencies.database.version;
-    OpenedConnectionsText = data.dependencies.database.opened_connections;
-    MaxConnectionsText = data.dependencies.database.max_connections;
+    databaseStatusInfo = (
+      <>
+        <div>Versão: {data.dependencies.database.version}</div>
+        <div>
+          Conexões Abertas:: {data.dependencies.database.opened_connections}
+        </div>
+        <div>
+          Conexões Máximas: {data.dependencies.database.max_connections}
+        </div>
+      </>
+    );
   }
   return (
     <>
       <h1>Database</h1>
-      <p>Versão: {versionUpdatedAtText}</p>
-      <p>Conexões Abertas: {OpenedConnectionsText}</p>
-      <p>Conexões Máximas: {MaxConnectionsText}</p>
+      {databaseStatusInfo}
     </>
   );
 }
