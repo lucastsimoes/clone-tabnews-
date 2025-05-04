@@ -17,6 +17,26 @@ export class ServiceError extends Error {
     };
   }
 }
+
+export class NotFoundError extends Error {
+  constructor({ action, message }) {
+    super(message || "Não foi possível encontrar esse recurso no sistema.");
+    this.name = "NotFoundError";
+    this.action =
+      action || "Confira se os parâmetros da consulta estão corretos.";
+    this.statusCode = 404;
+  }
+
+  toJSON() {
+    return {
+      name: this.name,
+      message: this.message,
+      action: this.action,
+      status_code: this.statusCode,
+    };
+  }
+}
+
 export class InternalServerError extends Error {
   constructor({ cause, statusCode }) {
     super("Um erro interno não esperado aconteceu.", {

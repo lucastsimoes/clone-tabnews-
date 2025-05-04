@@ -1,5 +1,5 @@
 import database from "infra/database";
-import { ValidationError } from "infra/errors";
+import { NotFoundError, ValidationError } from "infra/errors";
 
 async function create(userInputValues) {
   await validateUniqueEmail(userInputValues.email);
@@ -35,6 +35,25 @@ async function create(userInputValues) {
   }
 }
 
+async function findOneByUsername(username) {
+  const userFound = runSelectQuery(username);
+  return userFound;
+
+  async function runSelectQuery(username) {
+    const results = await database.query({
+      text: "SELECT * FROM users WHERE LOWER(username) = LOWER($1) LIMIT 1",
+      values: [username],
+    });
+    if (results.rowCount == 0) {
+      throw new NotFoundError({
+        message: "O username informado não está cadastrado no sistema.",
+        action: "Por favor confira o nome de usuário e tente novamente.",
+      });
+    }
+    return results.rows[0];
+  }
+}
+
 async function runInsertQuery(userInputValues) {
   const result = await database.query({
     text: "INSERT INTO users (username,email, password) VALUES ($1, $2, $3) RETURNING *",
@@ -49,6 +68,7 @@ async function runInsertQuery(userInputValues) {
 
 const user = {
   create,
+  findOneByUsername,
 };
 
 export default user;
